@@ -1,0 +1,11 @@
+Django>=2.2.1,<2.3.0
+django-private-storage>=2.2,<2.3
+djangorestframework>=3.9.2,<3.10.0
+numpy
+psycopg2>=2.8.2,<2.9.0
+pylint-django>=2.0.9,<2.1.0
+pyzmq>=18.0.1,<18.1.0
+django-cors-headers
+msgpack>=0.6.1,<0.7.0
+django-grappelli>=2.13.1,<2.14.0
+django-modeladmin-reorder>=0.3.1,<0.4.0

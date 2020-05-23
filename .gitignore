@@ -1,0 +1,11 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Server Environment
+postgresql-*/
+venv/
+
+# Develop Environment
+.vscode/*
