@@ -104,12 +104,14 @@ class CreateTokenView(ObtainAuthToken):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
+        # 기존 토큰 삭제: 다른 IP에서 로그인 시, 이전 IP에서는 로그아웃
         auth_token = getattr(user, 'auth_token', None)
         if auth_token is not None:
             auth_token.delete()
-
+        # 토큰 발급
         token = Token.objects.create(user=user)
 
+        # 로그인한 IP를 등록함.
         userip = get_client_ip(request)
         user.login_ip = userip
         user.save(update_fields=['login_ip'])
