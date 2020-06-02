@@ -125,3 +125,39 @@ class LogoutView(APIView):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
 
+class UserInfoView(APIView):
+    """계정 정보 확인"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    queryset = models.UserInfo.objects.all()
+
+    def get(self, request, format=None):
+        userinfo_queryset = self.queryset.filter(user__id=request.user.id)
+
+        if len(userinfo_queryset) != 1:
+            return Response(
+                {
+                    "success": False,
+                    "msg": "cannot find given user information."
+                }, status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        userinfo = userinfo_queryset.first()
+
+        res_dict = {
+            "email": request.user.email,
+	        "address": userinfo.address,
+	        "parentName": userinfo.parentName,
+	        "parentBirthDate": userinfo.parentBirthDate,
+	        "parentGender": userinfo.parentGender,
+	        "phone": userinfo.phone,
+	        "childGender": userinfo.childGender,
+	        "childBirthDate": userinfo.childBirthDate,
+	        "childHeight": userinfo.childHeight,
+	        "childWeight": userinfo.childWeight,
+            "childDevelopmentAge": userinfo.childDevelopmentAge,
+            # "KDSTResult": userinfo...
+	        "childRemark": userinfo.childRemark
+        }
+
+        return Response({"success": True, "data": res_dict}, status=status.HTTP_200_OK)
