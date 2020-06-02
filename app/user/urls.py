@@ -7,8 +7,8 @@ app_name = 'user'
 router = DefaultRouter()
 
 urlpatterns = [
-    path('create/', views.CreateUserView.as_view(), name='create'),
-    path('token/', views.CreateTokenView.as_view(), name='token'),
+    path('signup/', views.CreateUserView.as_view(), name='signup'),
+    path('login/', views.CreateTokenView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('', include(router.urls)),
 ]
