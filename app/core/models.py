@@ -59,6 +59,8 @@ class UserInfo(models.Model):
     addressY = models.FloatField(default=0.0)
 
 class InstructorInfo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
     parentName = models.CharField(max_length=32)
     parentBirthDate = models.DateField()
     parentGender = models.CharField(max_length=8)
