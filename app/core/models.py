@@ -21,6 +21,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """유저"""
+    # 기본 정보
     email = models.EmailField(max_length=255, unique=True)
     description = models.CharField(max_length=2048, null=True)
 
@@ -37,6 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class UserInfo(models.Model):
+    """사용자의 세부 정보"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     address = models.CharField(max_length=1024)
@@ -59,6 +61,7 @@ class UserInfo(models.Model):
     addressY = models.FloatField(default=0.0)
 
 class InstructorInfo(models.Model):
+    """통솔자(유치원 선생)의 세부 정보"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     parentName = models.CharField(max_length=32)
@@ -83,8 +86,19 @@ class MeetingReview(models.Model):
     comment = models.CharField(max_length=512)
 
 
-class Cluster(models.Model):
-    """주변인을 찾기 위한 클러스터"""
-    # 추후 수정
-    pass
+class CentroidTree(models.Model):
+    """주변인을 찾기 위한 클러스터의 트리 구조"""
 
+    # 클러스터 중심점의 위도/경도
+    addressX = models.FloatField(default=0.0)
+    addressY = models.FloatField(default=0.0)
+
+    # 클러스터의 하위(자식) 노드
+    childs = models.ManyToManyField('self', through='CentroidTreeWeight', symmetrical=False)
+
+class CentroidTreeWeight(models.Model):
+    """클러스터 트리의 관계 사이의 Attibute"""
+    # 트리 내의 노드가 실제 데이터인지 판단하는 필드
+    from_centroid = models.ForeignKey('CentroidTree', on_delete=models.CASCADE, related_name='from_centroid_id')
+    to_centroid = models.ForeignKey('CentroidTree', on_delete=models.CASCADE, related_name='to_centroid_id')
+    is_real = models.BooleanField(default=True)
