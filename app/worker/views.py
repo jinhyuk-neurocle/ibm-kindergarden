@@ -40,7 +40,7 @@ from django.db import transaction
 from core import models
 
 
-capacity  = 32
+capacity  = 3
 FIG = 0
 
 	
@@ -521,42 +521,6 @@ def generate_data(N):
     GPS_list = np.random.rand(N, 2)
     return GPS_list, ID_list
 
-class CreateCentroidTree(generics.CreateAPIView):
-    """주변 노드 hashing을 위한 Centroid 트리 구조 생성"""
-    def post(self, request, *args, **kwargs):
-        # superuser authentication
-        user = authenticate(request=request, username=email, password=password)
-        if not user.is_superuser:
-            return Response(
-                {
-                    "success": False,
-                    "msg": "Need Superuser permission"
-                },
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # call data
-        # TODO: use DB data instead of random generated data
-        k, N = 20, 1000
-        GPS_list, ID_list = generate_data(N)
-        table.reset_db()
-
-        # make cluster by k-means
-        clusters = K_CLUSTER(k, GPS_list)
-        clusters.initialize()
-        clusters.k_means()
-        clusters.k_means_advanced()
-
-        # make cluster tree
-        cluster_tree = ClusterTree(clusters)
-        cluster_tree.initTree()
-        cluster_tree.buildTree()
-        cluster_tree.updateTree()
-
-        # save
-        cluster_tree.saveTree()
-
-        return Response({"success": True}, status=status.HTTP_200_OK)
 
 class AddNodeToCentroidTree(generics.CreateAPIView):
     """Centroid 트리에 노드 추가"""
@@ -586,3 +550,40 @@ class GetNeighbors(generics.CreateAPIView):
         neighbors = cluster_tree.request_nearest([0, 0])
 
         return Response( { "data": neighbors }, status=status.HTTP_200_OK )
+
+
+
+def main():
+    """주변 노드 hashing을 위한 Centroid 트리 구조 생성"""\
+    # call data
+    # TODO: use DB data instead of random generated data
+    # k, N = 20, 1000
+    # GPS_list, ID_list = generate_data(N)
+
+	k, N = 1, 0
+	GPS_list = []
+
+	userinfo_queryset = models.UserInfo.objects.all()
+	for userinfo in userinfo_queryset:
+		GPS_list.append([userinfo.addressX, userinfo.addressY])
+	GPS_list = np.array(GPS_list)
+	
+    table.reset_db()
+
+    # make cluster by k-means
+    clusters = K_CLUSTER(k, GPS_list)
+    clusters.initialize()
+    clusters.k_means()
+    clusters.k_means_advanced()
+
+    # make cluster tree
+    cluster_tree = ClusterTree(clusters)
+    cluster_tree.initTree()
+    cluster_tree.buildTree()
+    cluster_tree.updateTree()
+
+    # save
+    cluster_tree.saveTree()
+
+if __name__ == "__main__":
+    main()

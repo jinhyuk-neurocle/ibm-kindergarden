@@ -9,3 +9,10 @@ django-cors-headers
 msgpack>=0.6.1,<0.7.0
 django-grappelli>=2.13.1,<2.14.0
 django-modeladmin-reorder>=0.3.1,<0.4.0
+scipy==1.4.1
+matplotlib
+dj_database_url
+dj-static==0.0.6
+gunicorn==19.1.1
+ibm_db_django
+whitenoise

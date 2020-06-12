@@ -1,0 +1,7 @@
+ applications: 
+  - name: ibm-kindergarden
+    random-route: true
+    memory: 256M
+    comand: bash ./run.sh
+    services:
+      - postgresql-kindergarden

@@ -25,12 +25,12 @@ class CreateUserView(generics.CreateAPIView):
         ]
         # 필수 유저 정보 필드
         user_info_required_field_list = [
-            'address', 'phone',
+            'address', 'addressDetail', 'phone',
             'parentName', 'parentGender', 'parentBirthDate', 
             'childName', 'childGender', 'childBirthDate',
             'childHeight', 'childWeight', 'childDevelopmentAge',
             # 'KDSTResult',
-            'childRemark'
+            'childRemark', 'addressX', 'addressY'
         ]
 
         try:
