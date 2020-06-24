@@ -23,10 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*nqs*5mvha)18a61b3(%orwc9+xgo!g8c=uw-+fe1_9b&7ey3%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'app',
@@ -47,7 +50,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,10 +88,11 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ibm_server_db',
-        'USER': 'postgres',
-        'PORT': '5432',
-        'PASSWORD': None,
+        'NAME': 'ibmclouddb',
+        'USER': 'ibm_cloud_4a2d1258_0c92_4f2e_93fb_94b8e379e4f1',
+        'PORT': '32264',
+        'HOST': 'ce29df93-8da3-4370-9d1f-38bbdb8fa002.br37s45d0p54n73ffbr0.databases.appdomain.cloud',
+        'PASSWORD': '7d2cb7f20530be773bb2d75327d7f24c04be4c42321fb3cf419e5fafbb9feeaf',
     }
 }
 

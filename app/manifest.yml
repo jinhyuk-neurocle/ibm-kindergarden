@@ -1,8 +1,7 @@
-applications:
-- name: app
-  memory: 256M
-  command: bash ./run.sh
-  buildpack: https://github.com/cloudfoundry/python-buildpack
-  path:
-  services:
-  - postgresql-9.1
+ applications: 
+  - name: ibm-kindergarden
+    random-route: true
+    memory: 256M
+    comand: bash ./run.sh
+    services:
+      - postgresql-kindergarden

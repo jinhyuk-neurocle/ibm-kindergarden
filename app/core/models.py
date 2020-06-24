@@ -42,6 +42,7 @@ class UserInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     address = models.CharField(max_length=1024)
+    addressDetail = models.CharField(default='', max_length=2048)
     parentName = models.CharField(max_length=32)
     parentBirthDate = models.DateField()
     parentGender = models.CharField(max_length=8)
